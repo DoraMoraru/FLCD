@@ -8,13 +8,15 @@ public class Main {
 //        System.out.println(symbolTable);
 //        System.out.println(symbolTable.insert("ab"));
 //        System.out.println(symbolTable.insert("ba"));
-        String fileName = "data/pErr.txt";
+        String fileName = "data/p1.txt";
         String outFileName = "data/pif.txt";
+        String outFileNameSymbol = "data/symbol.txt";
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
         try {
             lexicalAnalyzer.readFromFile(fileName);
             lexicalAnalyzer.analyze();
             lexicalAnalyzer.writePifToFile(outFileName);
+            lexicalAnalyzer.writeSymbolTableToFile(outFileNameSymbol);
         } catch (LexicalException | IOException e) {
             System.out.println(e.getMessage());
         }

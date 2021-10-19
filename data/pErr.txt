@@ -1,9 +1,11 @@
 
 </
 
-int 1number;
-int i = 2;
-boolean flag = False;
+int (1number);
+int (i);
+i = 2;
+boolean (flag);
+flag = False;
 
 readNumber(number);
 

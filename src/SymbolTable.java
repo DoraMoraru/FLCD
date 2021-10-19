@@ -55,4 +55,12 @@ public class SymbolTable {
                 ", symbols=" + symbols +
                 '}';
     }
+
+    public int getNumberOfBuckets() {
+        return numberOfBuckets;
+    }
+
+    public List<List<String>> getSymbols() {
+        return symbols;
+    }
 }

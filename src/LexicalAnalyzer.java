@@ -4,14 +4,14 @@ import java.util.regex.Pattern;
 
 public class LexicalAnalyzer {
     private String sourceCode;
-    private List<Token> tokens;
-    private SymbolTable symbolTable;
+    private final List<Token> tokens;
+    private final SymbolTable symbolTable;
 
-    private static Map<String, Integer> TOKEN_CODES;
-    private static int IDENTIFIER_TOKEN_CODE;
-    private static int CONSTANT_TOKEN_CODE;
-    private static String[] RESERVED_WORDS;
-    private static String SPECIAL_CHARACTERS;
+    private static final Map<String, Integer> TOKEN_CODES;
+    private static final int IDENTIFIER_TOKEN_CODE;
+    private static final int CONSTANT_TOKEN_CODE;
+    private static final String[] RESERVED_WORDS;
+    private static final String SPECIAL_CHARACTERS;
 
     static {
         IDENTIFIER_TOKEN_CODE = 0;
@@ -53,6 +53,7 @@ public class LexicalAnalyzer {
         TOKEN_CODES.put("</", 35);
         TOKEN_CODES.put("/>", 36);
         TOKEN_CODES.put("%", 37);
+        TOKEN_CODES.put("write", 38);
 
         RESERVED_WORDS = new String[]{
                 "int",
@@ -67,7 +68,8 @@ public class LexicalAnalyzer {
                 "boolean",
                 "do",
                 "stop",
-                "struct"
+                "struct",
+                "write"
         };
         SPECIAL_CHARACTERS = " _{}[];.,()|?!";
     }
@@ -82,6 +84,7 @@ public class LexicalAnalyzer {
         sourceCode = "";
         while (scanner.hasNext()) {
             sourceCode += scanner.nextLine();
+            sourceCode += '\n';
         }
         scanner.close();
         sourceCode = eraseWhiteSpaces(sourceCode);
@@ -96,7 +99,10 @@ public class LexicalAnalyzer {
                 result.append(ch);
                 opened = !opened;
             } else if (!opened) {
-                if (!Pattern.matches("[\\s]", "" + ch)) {
+                if(ch == '\n'){
+                    result.append(ch);
+                }
+                else if (!Pattern.matches("[\\s]", "" + ch)) {
                     result.append(ch);
                 }
             } else {
@@ -107,10 +113,14 @@ public class LexicalAnalyzer {
     }
 
     public void analyze() throws LexicalException {
-        char charSourceCode[] = this.sourceCode.toCharArray();
+        char[] charSourceCode = this.sourceCode.toCharArray();
+        int line = 1;
         int i=0;
         while(i < charSourceCode.length){
-            if(isSeparator(charSourceCode[i])){
+            if(charSourceCode[i] == '\n'){
+                line++;
+                i++;
+            }else if(isSeparator(charSourceCode[i])){
                 tokens.add(getTokenFromSeparator(charSourceCode[i]));
                 i++;
             } else if(isOperatorFirstChar(charSourceCode[i])){
@@ -133,16 +143,17 @@ public class LexicalAnalyzer {
                     tokens.add(getTokenFromReservedWord(word));
                 } else if(isIdentifier(word)){
                     if(word.length() > 256){
-                        throw new LexicalException("Inavlid identifier : must have at most 256 characters: " + word);
+                        throw new LexicalException("Invalid identifier : must have at most 256 characters: " + word + " on line: " + line);
                     }
                     tokens.add(new Token(IDENTIFIER_TOKEN_CODE, symbolTable.insert(word)));
                 } else if(isConstant(word)){
                     tokens.add(new Token(CONSTANT_TOKEN_CODE, symbolTable.insert(word)));
                 } else {
-                    throw new LexicalException("Invalid token: " + word);
+                    throw new LexicalException("Invalid token: " + word + " on line: " + line);
                 }
             }
         }
+        System.out.println("Lexically correct");
     }
 
     private boolean isConstant(String token) {
@@ -178,7 +189,7 @@ public class LexicalAnalyzer {
     }
 
     private boolean isSeparator(char token){
-        return (Pattern.matches("[" + Pattern.quote(";{}()[]") + "]", "" + token));
+        return (Pattern.matches("[" + Pattern.quote(";{}()[]\n") + "]", "" + token));
     }
 
     private Token getTokenFromOperator(String token) throws LexicalException {
@@ -206,7 +217,29 @@ public class LexicalAnalyzer {
             for (Token pifToken : tokens) {
                 writer.write(pifToken.toString() + System.lineSeparator());
             }
-            writer.write(symbolTable.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
+    }
+
+    public void writeSymbolTableToFile(String outFilePath) throws IOException {
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(outFilePath));
+            int i = 0;
+            int numberOfBuckets = symbolTable.getNumberOfBuckets();
+            while (i < numberOfBuckets){
+                if(symbolTable.getSymbols().get(i).size() != 0){
+                    for(int j = 0 ; j < symbolTable.getSymbols().get(i).size(); j ++){
+                        writer.write(String.valueOf(symbolTable.getSymbols().get(i).get(j)) + " "+ i + " " + j + "\n");
+                    }
+                }
+                i++;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
