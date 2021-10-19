@@ -1,0 +1,24 @@
+
+</
+
+int 1number;
+int i = 2;
+boolean flag = False;
+
+readNumber(number);
+
+while (i <= 1number / 2) do { 
+	checkIf(1number % i == 0) {
+		flag = True;
+		stop;
+	}
+	i = i + 1;
+}
+
+checkIf(flag != False){
+	write(1number + ' is a prime number');
+} elseDo {
+	write(1number + " is not a prime number");
+}
+
+/>
