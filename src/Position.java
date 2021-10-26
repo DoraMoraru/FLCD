@@ -1,6 +1,6 @@
 public class Position {
-    private int bucket;
-    private int positionInBucket;
+    private final int bucket;
+    private final int positionInBucket;
 
     public Position(int bucket, int positionInBucket) {
         this.bucket = bucket;

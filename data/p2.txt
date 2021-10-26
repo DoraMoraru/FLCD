@@ -3,21 +3,21 @@
 
 int (number);
 int (i);
-i = 2;
+i = (-2);
 boolean (flag);
-(flag) = False;
+flag = (False);
 
 readNumber(number);
 
-while (i <= number / 2) do { 
+while (i <= (number / 2)) do {
 	checkIf(number % i == 0) {
-		flag = True;
+		flag = (True);
 		stop;
 	}
-	i = i + 1;
+	i = (i + 1);
 }
 
-checkIf(flag != False){
+checkIf(flag != (False)){
 	write(number + " is a prime number");
 } elseDo {
 	write(number + " is not a prime number");

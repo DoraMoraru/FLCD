@@ -157,10 +157,13 @@ public class LexicalAnalyzer {
     }
 
     private boolean isConstant(String token) {
-        if (Pattern.matches("[\\+\\-]*(([1-9][0-9]*)|0)" , token)) {
+        if (Pattern.matches("[\\+\\-]?(([1-9][0-9]*)|0)" , token)) {
             return true;
         }
-        return Pattern.matches("\"[a-zA-Z0-9" + Pattern.quote(SPECIAL_CHARACTERS) + "]+\"" , token);
+        if(Pattern.matches("\"[a-zA-Z0-9" + Pattern.quote(SPECIAL_CHARACTERS) + "]+\"" , token)){
+            return true;
+        }
+        return Pattern.matches("\'[a-zA-Z0-9" + Pattern.quote(SPECIAL_CHARACTERS) + "]\'" , token);
 
     }
 
@@ -206,7 +209,7 @@ public class LexicalAnalyzer {
     }
 
     private boolean isIdentifier(String token){
-        return (Pattern.matches("[_a-zA-z][_a-zA-z0-9]*", token));
+        return (Pattern.matches("[a-zA-z][a-zA-z0-9]*", token));
     }
 
     public void writePifToFile(String outFilePath) throws IOException {
@@ -235,7 +238,7 @@ public class LexicalAnalyzer {
             while (i < numberOfBuckets){
                 if(symbolTable.getSymbols().get(i).size() != 0){
                     for(int j = 0 ; j < symbolTable.getSymbols().get(i).size(); j ++){
-                        writer.write(String.valueOf(symbolTable.getSymbols().get(i).get(j)) + " "+ i + " " + j + "\n");
+                        writer.write(symbolTable.getSymbols().get(i).get(j) + " "+ i + " " + j + "\n");
                     }
                 }
                 i++;

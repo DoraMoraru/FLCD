@@ -8,7 +8,7 @@ public class Main {
 //        System.out.println(symbolTable);
 //        System.out.println(symbolTable.insert("ab"));
 //        System.out.println(symbolTable.insert("ba"));
-        String fileName = "data/p1.txt";
+        String fileName = "data/pErr.txt";
         String outFileName = "data/pif.txt";
         String outFileNameSymbol = "data/symbol.txt";
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();

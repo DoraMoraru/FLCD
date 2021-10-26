@@ -1,3 +1,10 @@
-a 97 0
-b 98 0
-c 99 0
+i 2 0
+True 4 0
+" is not a prime number" 12 0
+number 31 0
+0 48 0
+1 49 0
+2 50 0
+" is a prime number" 55 0
+False 79 0
+flag 101 0

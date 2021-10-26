@@ -9,7 +9,7 @@ flag = False;
 
 readNumber(number);
 
-while (i <= 1number / 2) do { 
+while (i <= 1number / 2) do {
 	checkIf(1number % i == 0) {
 		flag = True;
 		stop;
