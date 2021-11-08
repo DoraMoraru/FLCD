@@ -1,0 +1,21 @@
+
+</
+int (a);
+int (b);
+int (c);
+
+readNumber(a);
+readNumber(b);
+readNumber(c);
+
+checkIf(a >= b && a >= c) {
+	write(a);
+}
+checkIf(b >= a && b >= c){
+	write(b);
+}
+checkIf(c >=a && c>= b){
+	write(c);
+}
+
+/>
