@@ -130,7 +130,7 @@ public class FAGenerators {
 
         // Zero numbers
         transitions.put(new Pair<>("S", "0"), Arrays.asList("NZ"));
-        transitions.put(new Pair<>("NS", "0"), Arrays.asList("NZ"));
+        //transitions.put(new Pair<>("NS", "0"), Arrays.asList("NZ"));
 
         // Prepare digits (first non-zero)
         List<String> digits = new ArrayList<>();
